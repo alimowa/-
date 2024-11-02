@@ -1,0 +1,36 @@
+ACL - списки контроля доступа, которые расширяют стандартные правила доступа для объектов
+Не все программы сохраняют настройки ACL (tar при архивации уничтожает всю информацию об ACL)
+
+Если требуется создать резервную копию настоек ACL, можно использовать команду:
+getfacl -R /directory > file.acls
+При необходимости можно восстановить настройки из резервной копии при помощи команды:
+setfacl --restore=file.acl
+
+Установка acl для файла для пользователя student:
+sudo setfacl -m g:tempgrp2:rw <имя файла>
+Установка acl по умолчанию для каталога:
+sudo setfacl -m g:tempgrp2:rm student3
+
+Просмотр acl для файла:
+student@alexander-VirtualBox:~$ getfacl student3
+# file: student3
+# owner: tmp
+# group: tempgrp
+user::rw-
+user:student:rw-
+group::rw-
+group:tempgrp2:rw-
+mask::rw-
+other::r--
+
+Если установлены acl, то команда ls -l выводит "+"после стандартных разрешений:
+-rw-rwxr-x  1 student student  151 ноя  2 13:21  student
+-rw-rwsr--  1 student student    0 ноя  2 12:58  student2
+-rw-rw-r--+ 1 tmp     tempgrp    8 ноя  2 15:11  student3
+drwxr-xr-x  2 student student 4096 авг 30 14:05  Видео
+
+drwxrwxr-x+ 2 student student 4096 ноя  2 13:00  Fold1
+drwxrwxrwt  5 student tempgrp 4096 ноя  2 14:37  Fold2
+drwxrwxr-x  6 student student 4096 авг 30 14:19  real
+
+
